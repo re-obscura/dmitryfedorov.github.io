@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Федоров Дмитрий - Персональный тренер</title>
+    <!-- Подключаем шрифт Inter из Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Подключаем Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Сброс стандартных отступов и полей */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Основные переменные для цветов и стилей */
+        :root {
+            --primary-color: #4CAF50; /* Спортивный зеленый */
+            --secondary-color: #2E7D32; /* Темно-зеленый для градиентов */
+            --text-primary: #F0F0F0; /* Цвет основного текста (светлый для темного фона) */
+            --text-secondary: #b0b0b0; /* Второстепенный цвет текста */
+            --background-dark: #1A1A1A; /* Темно-серый фон страницы */
+            --card-background: rgba(255, 255, 255, 0.08); /* Полупрозрачный для эффекта матового стекла */
+            --border-radius: 2px; /* Минимальный радиус скругления углов для строгости */
+            --box-shadow-strong: 0 6px 20px rgba(0, 0, 0, 0.4); /* Усиленная тень */
+            --box-shadow-light: 0 3px 10px rgba(0, 0, 0, 0.2); /* Легкая тень */
+            --border-color-alpha: rgba(255, 255, 255, 0.1); /* Полупрозрачная граница */
+        }
+
+        /* Стили для всего тела страницы */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+            min-height: 100vh; /* Минимальная высота для анимации фона */
+        }
+
+        /* Анимированный градиентный фон */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; /* Помещает фон за всеми элементами */
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 25%, #0a0a0a 50%, #1a1a1a 75%, #2a2a2a 100%);
+            background-size: 400% 400%; /* Увеличиваем размер градиента для плавного движения */
+            animation: gradientShift 20s ease infinite alternate; /* Анимация движения градиента */
+        }
+
+        /* Дополнительные анимированные элементы на фоне */
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(76, 175, 80, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(46, 125, 50, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(76, 175, 80, 0.2) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite; /* Анимация "плавания" */
+        }
+
+        /* Анимация смещения градиента */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* Анимация "плавания" для фоновых элементов */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            33% { transform: translateY(-20px); }
+            66% { transform: translateY(10px); }
+        }
+
+        /* Навигационная панель */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 0; /* Фиксированный паддинг для десктопа */
+            background: rgba(10, 10, 10, 0.8); /* Полупрозрачный фон для навигации */
+            backdrop-filter: blur(10px); /* Эффект матового стекла для навигации */
+            -webkit-backdrop-filter: blur(10px); /* Для совместимости с Safari */
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color-alpha); /* Строгая граница */
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 40px; /* Фиксированная высота для десктопа */
+            width: auto; /* Автоматическая ширина для сохранения пропорций */
+            object-fit: contain; /* Для сохранения пропорций и вмещения изображения */
+        }
+
+        /* Гамбургер-иконка для мобильной навигации */
+        .nav-toggle {
+            display: none; /* Скрыта по умолчанию на десктопе */
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            color: var(--text-primary);
+            cursor: pointer;
+            z-index: 1001; /* Убеждаемся, что она поверх меню */
+            transition: transform 0.3s ease;
+        }
+
+        .nav-toggle:focus {
+            outline: none;
+        }
+
+        .nav-links {
+            display: flex; /* Flex-контейнер для десктопа */
+            list-style: none;
+            gap: 20px; /* Отступ между ссылками */
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85em; /* Размер шрифта */
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px; /* Подчеркивание */
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Главная секция (Hero) */
+        .hero {
+            min-height: 100vh; /* Полная высота экрана */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px 80px; /* Отступ сверху для навигации, снизу для стыка */
+            position: relative;
+            background-color: var(--background-dark); /* Основной фон для Hero */
+            z-index: 0; /* Для корректной работы с bg-animation */
+            animation: heroBackgroundFadeIn 1.5s ease-out forwards;
+        }
+
+        @keyframes heroBackgroundFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Оверлей для Hero секции */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3); /* Более простой темный оверлей поверх bg-animation */
+            z-index: 1;
+        }
+
+        /* Контейнер для содержимого Hero (текст + изображение) */
+        .hero-container {
+            position: relative;
+            z-index: 2; /* Поверх оверлея */
+            display: flex;
+            flex-direction: column; /* По умолчанию колонкой на мобильных */
+            align-items: center; /* Центрируем элементы по горизонтали */
+            gap: 30px; /* Отступ между текстом и изображением */
+            max-width: 960px; /* Максимальная ширина содержимого Hero */
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center; /* Текст центрирован на мобильных */
+        }
+
+        /* Контейнер для текста Hero */
+        .hero-text-content {
+            max-width: 650px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #FFFFFF;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero-tagline {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        /* Обертка для изображения тренера в Hero секции */
+        .hero-image-wrapper {
+            width: 100%; /* Занимает всю доступную ширину на мобильных */
+            max-width: 350px; /* Ограничение максимальной ширины изображения */
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow-strong);
+            background-color: var(--card-background); /* Фон для изображения */
+            padding: 10px; /* Внутренний отступ вокруг изображения */
+            /* На мобильных это будет переопределено */
+        }
+
+        .hero-image { /* Само изображение тренера */
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: contain; /* Обеспечивает полное отображение изображения, не обрезая его */
+            border-radius: var(--border-radius);
+        }
+
+        /* Обертка для основного контента (услуги, обо мне, галерея) */
+        .main-content-wrapper {
+            max-width: 600px; /* По умолчанию для мобильных */
+            margin: 0px auto 40px auto; /* Нет отрицательного верхнего отступа */
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-strong);
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color-alpha);
+            padding-bottom: 0; /* Футер внутри, поэтому без нижнего паддинга */
+            position: relative; /* Важно для z-index */
+            z-index: 5; /* Чтобы был поверх hero */
+        }
+
+        /* Секции внутри main-content-wrapper */
+        .services, .about, .gallery {
+            padding: 40px 25px; /* Уменьшен паддинг для строгости */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Разделитель */
+        }
+
+        .services:last-of-type, .about:last-of-type, .gallery:last-of-type {
+            border-bottom: none; /* Убираем границу у последней секции внутри wrapper */
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 40px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Оптимизировано для мобильных */
+            gap: 20px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05); /* Легкий полупрозрачный фон */
+            backdrop-filter: blur(8px); /* Матовое стекло */
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--box-shadow-light);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(46, 125, 50, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card:hover::before {
+            opacity: 0.12;
+        }
+
+        .service-number {
+            width: 45px;
+            height: 45px;
+            border-radius: var(--border-radius);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .service-card h3 i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .service-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-card li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 20px;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            line-height: 1.7;
+        }
+
+        .service-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .service-card .service-description {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        /* Секция Обо Мне */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .about-text {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .credentials {
+            display: grid;
+            gap: 12px;
+        }
+
+        .credential-item {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .credential-item:hover {
+            transform: translateX(3px);
+            border-color: rgba(76, 175, 80, 0.5);
+        }
+
+        .credential-item i {
+            font-size: 1.2em;
+            color: var(--primary-color);
+            margin-right: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .credential-item h4 {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1em;
+            margin-bottom: 3px;
+        }
+
+        .credential-item p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* Секция Галерея */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Оптимизировано для мобильных */
+            gap: 12px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            font-size: 0.85em;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: var(--border-radius);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item i {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            z-index: 2;
+            display: none;
+        }
+
+        .gallery-item .placeholder-text {
+            z-index: 2;
+            color: var(--text-secondary);
+            text-align: center;
+            display: none;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(46, 125, 50, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item:hover::before {
+            opacity: 0.15;
+        }
+
+        /* Футер */
+        .footer {
+            padding: 40px 20px 25px;
+            text-align: center;
+            border-top: 1px solid var(--border-color-alpha);
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius);
+            background: var(--card-background);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color-alpha);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Модальное окно для изображений */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease-out;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow-strong);
+            animation: zoomIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Кнопка закрытия */
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Скрываем подпись модального окна */
+        .modal-caption {
+            display: none;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Адаптивность для мобильных устройств (до 768px) */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 10px 0; /* Меньший паддинг на мобильных */
+            }
+            .logo-img {
+                height: 35px; /* Чуть меньший логотип на мобильных */
+            }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 280px;
+                height: 100vh;
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(100%);
+                transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.4);
+                border-left: 1px solid var(--border-color-alpha);
+            }
+
+            .nav-links.open {
+                transform: translateX(0);
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2em;
+                font-weight: 600;
+                color: var(--text-primary);
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            body.no-scroll {
+                overflow: hidden;
+            }
+
+            .mobile-menu-overlay {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.4s ease;
+            }
+
+            .mobile-menu-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            /* Изменения для Hero секции на мобильных: фото как фон */
+            .hero {
+                background-image: url('ava3.jpg'); /* Фото как фон Hero */
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                padding: 120px 20px 80px; /* Сохраняем отступы */
+            }
+            .hero::before { /* Оверлей для текста на фото */
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.4) 100%);
+                z-index: 1;
+            }
+            .hero-container { /* Контейнер для текста на мобильных */
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 0; /* Убираем отступ между текстом и скрытым изображением */
+            }
+            .hero-image-wrapper { /* Скрываем wrapper с изображением на мобильных */
+                display: none;
+            }
+            .hero-text-content { /* Текст на мобильных */
+                text-align: center;
+                max-width: 100%; /* Занимаем всю доступную ширину */
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .hero-tagline {
+                font-size: 0.95rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            }
+
+            .service-number {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .service-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .service-card li {
+                font-size: 0.8em;
+            }
+
+            .about-text {
+                font-size: 0.85em;
+            }
+
+            .credential-item h4 {
+                font-size: 0.9em;
+            }
+
+            .credential-item p {
+                font-size: 0.75em;
+            }
+
+            .gallery-item i {
+                font-size: 1.8em;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                max-height: 85vh;
+            }
+
+            .modal-close {
+                font-size: 30px;
+                top: 10px;
+                right: 20px;
+            }
+        }
+
+        /* Адаптивность для очень маленьких экранов (до 480px) */
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .hero-tagline {
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .service-card h3 {
+                font-size: 1rem;
+            }
+
+            .cta-button {
+                padding: 8px 20px;
+                font-size: 0.8em;
+            }
+        }
+
+        /* Медиа-запрос для десктопов и больших экранов (от 769px и выше) */
+        @media (min-width: 769px) {
+            /* Отключаем фоновое изображение Hero на десктопе, если оно было установлено */
+            .hero {
+                background-image: none; /* Убираем фоновое изображение Hero на десктопе */
+            }
+            .hero::before { /* Убираем оверлей фонового изображения Hero на десктопе */
+                background: none;
+            }
+
+            .hero-container {
+                flex-direction: row; /* Элементы Hero располагаются в ряд */
+                justify-content: center; /* Центрируем по горизонтали */
+                align-items: center; /* Выравниваем по центру по вертикали */
+                text-align: left; /* Текст выравнивается по левому краю */
+                gap: 50px; /* Увеличиваем отступ между текстом и изображением */
+            }
+            .hero-text-content {
+                text-align: left; /* Убедимся, что текст выровнен по левому краю */
+            }
+            .hero-image-wrapper {
+                display: block; /* Показываем wrapper с изображением на десктопе */
+                max-width: 400px; /* Увеличиваем максимальную ширину изображения на десктопе */
+                padding: 5px; /* Уменьшаем рамку/паддинг вокруг фото */
+                box-shadow: var(--box-shadow-strong);
+                background-color: var(--card-background);
+            }
+            .hero-image {
+                object-fit: contain; /* Сохраняем object-fit: contain для десктопа */
+                height: auto;
+            }
+            .main-content-wrapper {
+                max-width: 900px; /* Увеличиваем ширину контента на больших экранах */
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr); /* Две колонки для услуг на десктопе */
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr); /* Три колонки для галереи на десктопе */
+            }
+        }
+
+        /* Дополнительные стили для очень больших экранов */
+        @media (min-width: 1200px) {
+             .hero-container {
+                max-width: 1100px; /* Еще большая ширина для Hero на очень больших экранах */
+            }
+        }
+
+
+        /* JavaScript для эффекта проявления при прокрутке */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); /* Улучшенная функция плавности */
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <!-- Логотип, теперь с корректным масштабированием -->
+            <a href="#home" class="logo-link">
+                <img src="logo.png" alt="Логотип Дмитрия Федорова" class="logo-img">
+            </a>
+            <!-- Гамбургер-иконка -->
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#about">Обо мне</a></li>
+                <li><a href="#gallery">Дипломы и сертификаты</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-text-content">
+                <h1>Федоров Дмитрий</h1>
+                <p class="hero-subtitle">Онлайн-тренер • Выступающий спортсмен • Эксперт в области спортивного питания</p>
+                <p class="hero-tagline">Приведу Вашу форму к идеалу, что улучшит качество Вашей повседневной жизни!</p>
+                <!-- Сделаем кнопку более прямолинейной для консультации -->
+                <a href="mailto:your_email@example.com?subject=Запрос на консультацию" class="cta-button">Написать мне</a>
+            </div>
+            <div class="hero-image-wrapper">
+                <img src="ava3.jpg" alt="Федоров Дмитрий - персональный тренер" class="hero-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Мобильный оверлей, который будет затемнять контент -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Новый контейнер для основного контента -->
+    <main class="main-content-wrapper">
+        <section class="services reveal" id="services">
+            <h2 class="section-title">Мои Услуги</h2>
+            <p class="section-subtitle">Профессиональный подход к достижению ваших целей</p>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-number">1</div>
+                    <h3><i class="fas fa-laptop-code"></i> Онлайн сопровождение</h3>
+                    <ul>
+                        <li>Первичная консультация</li>
+                        <li>Анкетирование</li>
+                        <li>Постановка цели и ее анализ</li>
+                        <li>Разработка индивидуального тренировочного плана</li>
+                        <li>Разбор техники упражнений</li>
+                        <li>Формирование индивидуального плана онлайн сопровождения питания</li>
+                        <li>Подбор спортивного питания, БАДов и аптечных препаратов</li>
+                        <li>Система отчетности раз в 2 недели (фото отчет, замеры, корректировка питания, корректировка плана тренировок)</li>
+                        <li>Разбор состояния здоровья (анализы), индивидуальные рекомендации</li>
+                        <li>Непрерывная связь, ответы на возникающие вопросы</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-number">2</div>
+                    <h3><i class="fas fa-medal"></i> Подготовка к соревнованиям</h3>
+                    <ul>
+                        <li>Анализ антропометрических данных спортсмена для понимания направленности и категории</li>
+                        <li>Разработка индивидуального плана действий, направленного на достижение целей в рамках определенной соревновательной категории</li>
+                        <li>Онлайн сопровождение</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-number">3</div>
+                    <h3><i class="fas fa-utensils"></i> Индивидуальный план питания</h3>
+                    <p class="service-description"></p>
+                    <ul>
+                        <li>Индивидуальный расчет КБЖУ</li>
+                        <li>Меню на неделю, две недели, месяц</li>
+                        <li>Состав блюд на основе вкусовых предпочтений, индивидуальной непереносимости продуктов</li>
+                        <li>Список покупок</li>
+                        <li>Список рецептов</li>
+                        <li>Инструкции по питанию</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-number">4</div>
+                    <h3><i class="fas fa-dumbbell"></i> Индивидуальные тренировки</h3>
+                    <ul>
+                        <li>Первичная консультация</li>
+                        <li>Анкетирование (заполнение личных данных, указание заболеваний, принимаемых БАДов, аптечных препаратов, описание тренировочного опыта)</li>
+                        <li>Консультация исходя из данных заполненных в анкете</li>
+                        <li>Разработка тренировочного плана исходя из первичных пропорций и поставленных целей и задач.</li>
+                        <li>Рекомендации по питанию и КБЖУ</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-number">5</div>
+                    <h3><i class="fas fa-comments"></i> Онлайн консультация</h3>
+                    <p class="service-description">Онлайн консультация дает возможность проанализировать образ жизни, определить текущее направление развития и цель тренировок. В процессе консультации можно получить ответы на интересующие вопросы относительно тренировочного процесса, питания, процессов восстановления и поддержания здоровья.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about reveal" id="about">
+            <h2 class="section-title">Обо Мне</h2>
+            <div class="about-content">
+                <div>
+                    <p class="about-text">
+                        Эксперт в области спортивного питания <b>с 2015 года</b>. В <b>2023 году</b> начал карьеру тренера тренажерного зала, а в <b>2024 году</b> получил диплом о профессиональной переподготовке от школы фитнеса PRO FG.
+                    </p>
+                    <p class="about-text">
+                        Являюсь выступающим спортсменом в категории <b>пляжный бодибилдинг</b>, призером различных стартов на территории ЮФО <b>с 2019 года</b>. С <b>2022 года</b> активно готовлю спортсменов в категориях: пляжный бодибилдинг, фитнес бикини, велнес, боди-фитнес, классический бодибилдинг.
+                    </p>
+                </div>
+
+                <div class="credentials">
+                    <div class="credential-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <h4>Образование</h4>
+                            <p>Фитнес тренер (диплом фитнес школы PRO FG)</p>
+                        </div>
+                    </div>
+
+                    <div class="credential-item">
+                        <i class="fas fa-award"></i>
+                        <div>
+                            <h4>Удостоверение</h4>
+                            <p>Персональный тренер (школа PRO FG)</p>
+                        </div>
+                    </div>
+
+                    <div class="credential-item">
+                        <i class="fas fa-certificate"></i>
+                        <div>
+                            <h4>Сертификаты</h4>
+                            <p>PEAK WEEK: смыслы и правила финальных манипуляций перед соревнованиями</p>
+                        </div>
+                    </div>
+
+                    <div class="credential-item">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h4>Специализация</h4>
+                            <p>Биомеханика: система индивидуальной акцентной нагрузки</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery reveal" id="gallery">
+            <h2 class="section-title">Дипломы и сертификаты</h2>
+            <p class="section-subtitle"></p>
+
+            <div class="gallery-grid">
+                <!-- Элементы галереи для прямоугольных изображений без ленивой загрузки -->
+                <div class="gallery-item">
+                    <img src="cert1.jpeg" alt="Сертификат 1 (Пример)">
+                    <i class="fas fa-image"></i>
+                    <span class="placeholder-text">Загрузка фото...</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="cert2.jpeg" alt="Сертификат 2 (Пример)">
+                    <i class="fas fa-image"></i>
+                    <span class="placeholder-text">Загрузка фото...</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="cert3.jpeg" alt="Сертификат 3 (Пример)">
+                    <i class="fas fa-image"></i>
+                    <span class="placeholder-text">Загрузка фото...</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="cert4.jpeg" alt="Сертификат 4 (Пример)">
+                    <i class="fas fa-image"></i>
+                    <span class="placeholder-text">Загрузка фото...</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
+                    <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link" title="VKontakte"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+                <p class="copyright">&copy; 2025 Федоров Дмитрий</p>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Модальное окно для полноразмерного просмотра изображений -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <!-- Подпись теперь скрыта через CSS -->
+        <div id="modalCaption" class="modal-caption"></div>
+    </div>
+
+    <script>
+        // Удалено изменение размера навбара при скролле.
+        // Плавная прокрутка к секциям по клику на ссылки в навбаре
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Анимация появления элементов при прокрутке (Scroll Reveal)
+        const observerOptions = {
+            threshold: 0.1, /* Элемент считается видимым, когда 10% его площади видно */
+            rootMargin: '0px 0px -100px 0px' /* Отступ от области видимости, чтобы анимация срабатывала чуть раньше */
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Остановить наблюдение после активации
+                }
+            });
+        }, observerOptions);
+
+        // Применяем Intersection Observer ко всем элементам с классом 'reveal'
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Добавление анимации поочередного появления карточек услуг
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`; /* Задержка для поочередного появления */
+                card.classList.add('fade-in-up');
+            });
+
+            // Логика отображения изображений или иконок/текста в галерее
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            galleryItems.forEach(item => {
+                const img = item.querySelector('img');
+                const icon = item.querySelector('.fas');
+                const placeholderText = item.querySelector('.placeholder-text');
+
+                // Показать иконку и текст плейсхолдера, пока изображение не загрузится или если его нет
+                if (icon) icon.style.display = 'block';
+                if (placeholderText) placeholderText.style.display = 'block';
+                if (img) img.style.display = 'none'; // Скрываем изображение, пока не убедимся, что оно загрузилось
+
+                if (img) {
+                    // Если есть реальный URL изображения
+                    img.onload = () => {
+                        img.style.display = 'block'; // Показать изображение
+                        if (icon) icon.style.display = 'none'; // Скрыть иконку
+                        if (placeholderText) placeholderText.style.display = 'none'; // Скрыть текст
+                    };
+                    img.onerror = () => {
+                        // Если изображение не загрузилось, показать иконку и текст
+                        if (icon) icon.style.display = 'block';
+                        if (placeholderText) placeholderText.style.display = 'block';
+                        img.style.display = 'none';
+                    };
+                    // Устанавливаем src изображения, чтобы начать загрузку
+                    const originalSrc = img.getAttribute('src');
+                    img.src = originalSrc;
+                }
+            });
+
+            // Логика для мобильной навигации
+            const navToggle = document.getElementById('navToggle');
+            const navLinks = document.getElementById('navLinks');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+            navToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+                mobileMenuOverlay.classList.toggle('active');
+                document.body.classList.toggle('no-scroll'); // Предотвращает скролл страницы
+            });
+
+            mobileMenuOverlay.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                mobileMenuOverlay.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('open');
+                    mobileMenuOverlay.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
+                });
+            });
+
+            // Добавляем стиль для предотвращения скролла, если его нет
+            if (!document.querySelector('style.no-scroll-style')) {
+                const styleSheet = document.createElement('style');
+                styleSheet.type = 'text/css';
+                styleSheet.classList.add('no-scroll-style'); /* Добавляем класс для идентификации */
+                styleSheet.innerText = `.no-scroll { overflow: hidden; }`;
+                document.head.appendChild(styleSheet);
+            }
+
+            // Логика модального окна
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalClose = document.getElementsByClassName('modal-close')[0];
+
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const img = this.querySelector('img');
+                    // Убедимся, что изображение загружено и видимо, прежде чем открывать модальное окно
+                    if (img && img.src && img.style.display !== 'none') {
+                        modal.classList.add('active');
+                        modalImage.src = img.src;
+                        // Подпись не нужна, поэтому не устанавливаем innerHTML modalCaption
+                        document.body.classList.add('no-scroll');
+                    }
+                });
+            });
+
+            modalClose.addEventListener('click', () => {
+                modal.classList.remove('active');
+                document.body.classList.remove('no-scroll');
+            });
+
+            // Закрытие модального окна при клике вне изображения
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
+                }
+            });
+
+            // Закрытие модального окна по клавише ESC
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
